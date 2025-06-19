@@ -18,22 +18,11 @@ public class StudentController {
     @Autowired
     private CourseService courseService;
 
-
-
     @GetMapping
     public List<Student> getAllStudents() {
         List<Student> students = studentService.getAllStudents();
-
-        // Force loading of course data (even with EAGER this can help in debug)
-        for (Student student : students) {
-            for (Course course : student.getCourses()) {
-                System.out.println("Student " + student.getName() + " enrolled in " + course.getCourseName());
-            }
-        }
-
         return students;
     }
-
     @PostMapping
     public Student addStudent(@RequestBody Student student) {
         return studentService.addStudent(student);
@@ -43,8 +32,6 @@ public class StudentController {
     public ResponseEntity<?> enrollStudent(@PathVariable Long studentId, @PathVariable Long courseId) {
         Student student = studentService.getStudentById(studentId).orElseThrow();
         Course course = courseService.getCourseById(courseId).orElseThrow();
-
-        student.getCourses().add(course);
         studentService.addStudent(student); // Save updated student
         return ResponseEntity.ok("Student enrolled successfully");
     }

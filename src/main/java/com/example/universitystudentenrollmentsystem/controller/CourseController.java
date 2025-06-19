@@ -12,14 +12,10 @@ import java.util.List;
 public class CourseController {
    @Autowired
     private  CourseService courseService;
-
-
-
     @GetMapping
     public List<Course> getAll() {
         return courseService.getAllCourses();
     }
-
     @PostMapping
     public Course addCourse(@RequestBody Course course) {
         return courseService.addCourse(course);

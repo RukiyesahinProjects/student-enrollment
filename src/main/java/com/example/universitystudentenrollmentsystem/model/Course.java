@@ -7,6 +7,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.*;
+import java.util.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -15,20 +17,18 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@JsonIgnoreProperties("students")
 public class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String courseName;
 
-    @ManyToMany(mappedBy = "courses")
+    @ManyToOne
+    private Instructor instructor;
 
-    private Set<Student> students = new HashSet<>();
+    @ManyToOne
+    private Department department;
 
-
-    public String getCourseName() {
-        return courseName;
-    }
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    private Set<Enrollment> enrollments = new HashSet<>();
 }
